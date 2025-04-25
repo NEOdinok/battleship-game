@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext, ReactNode } from "react";
+import { createContext, useReducer, useContext, ReactNode } from "react";
 
 type Coord = [number, number];
 

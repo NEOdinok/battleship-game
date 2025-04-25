@@ -1,4 +1,27 @@
+import { cn } from "@/lib/utils";
 import { useGame } from "@/contexts/GameContext";
+
+// ship silhouettes
+import carrierImg from "@/assets/carrier_shape.png";
+import battleshipImg from "@/assets/battleship_shape.png";
+import cruiserImg from "@/assets/cruiser_shape.png";
+import submarineImg from "@/assets/submarine_shape.png";
+import destroyerImg from "@/assets/destroyer_shape.png";
+
+// hit / miss icons
+import hitSmall from "@/assets/hit_small.png";
+import missSmall from "@/assets/miss_small.png";
+
+/** helpers */
+const shipSprite: Record<string, string> = {
+  destroyer: destroyerImg,
+  battleship: battleshipImg,
+  cruiser: cruiserImg,
+  submarine: submarineImg,
+  carrier: carrierImg,
+};
+
+const squareSize = "w-5 h-5 flex-shrink-0"; // individual box size
 
 export const ShipsTab: React.FC = () => {
   const { state } = useGame();
@@ -6,31 +29,33 @@ export const ShipsTab: React.FC = () => {
   return (
     <div className="border rounded-lg p-4 h-full">
       <h2 className="text-lg font-semibold mb-4">Ships</h2>
-      <div className="flex flex-col gap-4">
+
+      <div className="flex flex-col gap-3">
         {Object.values(state.ships).map((ship) => {
           const cells = ship.positions.map(([r, c]) => `${r}-${c}`);
+
           return (
-            <div
-              key={ship.name}
-              className="flex items-center justify-between text-sm"
-            >
-              <span className="capitalize">{ship.name}</span>
+            <div key={ship.name} className="flex items-center justify-between">
+              <img
+                src={shipSprite[ship.name]}
+                alt={ship.name}
+                className={cn("h-8 w-auto select-none pointer-events-none")}
+              />
+
               <div className="flex gap-1">
-                {cells.map((k) => (
-                  <span
-                    key={k}
-                    className={`w-5 h-5 text-xs flex items-center justify-center border rounded
-                      ${
-                        state.hits.has(k)
-                          ? "bg-red-500 text-white"
-                          : state.misses.has(k)
-                          ? "bg-blue-300"
-                          : "bg-gray-200"
-                      }`}
-                  >
-                    {state.hits.has(k) ? "1" : state.misses.has(k) ? "0" : ""}
-                  </span>
-                ))}
+                {cells.map((k) => {
+                  const hit = state.hits.has(k);
+
+                  return (
+                    <span key={k} className={squareSize}>
+                      <img
+                        src={hit ? hitSmall : missSmall}
+                        alt={hit ? "hit" : "not hit yet"}
+                        className="w-full h-full object-contain"
+                      />
+                    </span>
+                  );
+                })}
               </div>
             </div>
           );

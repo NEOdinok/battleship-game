@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+#root {
+  flex-grow: 1;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -50,6 +54,14 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -59,21 +71,12 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
 button {
-  /* border-radius: 8px; */
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -87,6 +90,7 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

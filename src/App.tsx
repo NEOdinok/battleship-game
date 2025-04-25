@@ -16,7 +16,7 @@ const AppLayout: React.FC = () => {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Info + Ships Column (left on desktop, bottom on tablet/mobile) */}
         <div className="order-2 lg:order-1 w-full lg:w-1/3">
-          <div className="flex flex-col md:flex-row lg:flex-col gap-6 h-full">
+          <div className="flex flex-col md:flex-row md:items-start lg:flex-col gap-6 h-full">
             {/* Player info boxes */}
             <div className="flex flex-row gap-4 md:w-1/2 lg:w-full">
               <PlayerInfoBox playerName="Player 1" count={totalHits} />

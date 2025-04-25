@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:node": "node --test --import tsx --import ./nodeTestGlobal.ts --test-reporter spec ./src/**/*.nodetest.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.4",
