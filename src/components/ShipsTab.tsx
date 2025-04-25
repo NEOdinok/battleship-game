@@ -25,7 +25,7 @@ export const ShipsTab: React.FC = () => {
   const { state } = useGame();
 
   return (
-    <div className="border rounded-lg p-4 h-full">
+    <div className="border rounded-lg sm:p-4 h-full">
       <h2 className="text-lg font-semibold mb-4">Ships</h2>
 
       <div className="flex flex-col gap-3">
