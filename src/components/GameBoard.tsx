@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { useGame } from "@/contexts/GameContext";
 
-import hitImg from "@/assets/hit.png";
+import hitImg from "@/assets/Hit.png";
 import missImg from "@/assets/miss.png";
 
 const getAriaLabel = (col: number, row: number) =>
