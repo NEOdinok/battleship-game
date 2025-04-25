@@ -36,11 +36,11 @@ export const GameBoard: React.FC = () => {
                   {row + 1}
                 </TableCell>
                 {cols.map((col) => {
-                  const k = `${row}-${col}`;
-                  const hit = state.hits.has(k);
-                  const miss = state.misses.has(k);
+                  const coordKey = `${row}-${col}`;
+                  const hit = state.hits.has(coordKey);
+                  const miss = state.misses.has(coordKey);
                   return (
-                    <TableCell key={k} className="w-10 h-10 p-0 border">
+                    <TableCell key={coordKey} className="w-10 h-10 p-0 border">
                       <button
                         disabled={hit || miss}
                         onClick={() => fire([row, col])}

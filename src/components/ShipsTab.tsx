@@ -1,14 +1,12 @@
 import { cn } from "@/lib/utils";
 import { useGame } from "@/contexts/GameContext";
 
-// ship silhouettes
 import carrierImg from "@/assets/carrier_shape.png";
 import battleshipImg from "@/assets/battleship_shape.png";
 import cruiserImg from "@/assets/cruiser_shape.png";
 import submarineImg from "@/assets/submarine_shape.png";
 import destroyerImg from "@/assets/destroyer_shape.png";
 
-// hit / miss icons
 import hitSmall from "@/assets/hit_small.png";
 import missSmall from "@/assets/miss_small.png";
 
@@ -21,7 +19,7 @@ const shipSprite: Record<string, string> = {
   carrier: carrierImg,
 };
 
-const squareSize = "w-5 h-5 flex-shrink-0"; // individual box size
+const squareSize = "w-5 h-5 flex-shrink-0";
 
 export const ShipsTab: React.FC = () => {
   const { state } = useGame();

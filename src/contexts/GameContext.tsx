@@ -12,8 +12,8 @@ type ShipName =
 type Ship = {
   name: ShipName;
   size: number;
-  positions: Coord[]; // immutable layout
-  hits: Set<string>; // strings \"row-col\" of hits on this ship
+  positions: Coord[];
+  hits: Set<string>;
 };
 
 interface GameState {
@@ -78,56 +78,60 @@ const layoutData = {
   ] as { ship: ShipName; positions: Coord[] }[],
 };
 
-const key = (r: number, c: number) => `${r}-${c}`;
+const getCoordKey = (r: number, c: number) => `${r}-${c}`;
 
-const initShips = layoutData.layout.reduce((acc, { ship, positions }) => {
-  acc[ship] = {
-    name: ship,
-    size: layoutData.shipTypes[ship],
-    positions,
-    hits: new Set<string>(),
-  };
-  return acc;
-}, {} as Record<ShipName, Ship>);
+const shipsByName = layoutData.layout.reduce<Record<ShipName, Ship>>(
+  (shipsMap, { ship: shipName, positions }) => {
+    shipsMap[shipName] = {
+      name: shipName,
+      size: layoutData.shipTypes[shipName],
+      positions,
+      hits: new Set<string>(),
+    };
+    return shipsMap;
+  },
+  {} as Record<ShipName, Ship>
+);
 
 const initialState: GameState = {
-  ships: initShips,
-  hits: new Set(),
-  misses: new Set(),
+  ships: shipsByName,
+  hits: new Set(), //global hit registry
+  misses: new Set(), // global miss registry
 };
 
-// ---------- reducer ----------
-function reducer(state: GameState, action: Action): GameState {
+export const reducer = (state: GameState, action: Action): GameState => {
   if (action.type !== "FIRE") return state;
 
-  const [r, c] = action.coord;
-  const k = key(r, c);
+  const [row, col] = action.coord;
+  const cellKey = getCoordKey(row, col);
 
-  if (state.hits.has(k) || state.misses.has(k)) return state; // already fired
+  if (state.hits.has(cellKey) || state.misses.has(cellKey)) return state;
 
-  // hit?
-  for (const ship of Object.values(state.ships)) {
-    if (ship.positions.some(([sr, sc]) => sr === r && sc === c)) {
-      const newHits = new Set(ship.hits).add(k);
+  for (const currentShip of Object.values(state.ships)) {
+    const isHit = currentShip.positions.some(
+      ([shipRow, shipCol]) => shipRow === row && shipCol === col
+    );
+
+    if (isHit) {
+      const newHitsForShip = new Set(currentShip.hits).add(cellKey);
+
       return {
         ...state,
-        hits: new Set(state.hits).add(k),
+        hits: new Set(state.hits).add(cellKey),
         ships: {
           ...state.ships,
-          [ship.name]: { ...ship, hits: newHits },
+          [currentShip.name]: { ...currentShip, hits: newHitsForShip },
         },
       };
     }
   }
 
-  // miss
   return {
     ...state,
-    misses: new Set(state.misses).add(k),
+    misses: new Set(state.misses).add(cellKey),
   };
-}
+};
 
-// ---------- context ----------
 const GameCtx = createContext<
   { state: GameState; fire: (c: Coord) => void; totalHits: number } | undefined
 >(undefined);
@@ -146,6 +150,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
 export const useGame = () => {
   const ctx = useContext(GameCtx);
+
   if (!ctx) throw new Error("useGame must be used within GameProvider");
+
   return ctx;
 };
