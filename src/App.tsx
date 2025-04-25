@@ -12,25 +12,20 @@ const AppLayout: React.FC = () => {
         Battleship Game 💥🔫🚢
       </h1>
 
-      {/* Root layout container */}
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Info + Ships Column (left on desktop, bottom on tablet/mobile) */}
         <div className="order-2 lg:order-1 w-full lg:w-1/3">
           <div className="flex flex-col md:flex-row md:items-start lg:flex-col gap-6 h-full">
-            {/* Player info boxes */}
             <div className="flex flex-row gap-4 md:w-1/2 lg:w-full">
               <PlayerInfoBox playerName="Player 1" count={totalHits} />
               <PlayerInfoBox playerName="Player 2" count={0} />
             </div>
 
-            {/* Ships display */}
             <div className="flex-1 md:w-1/2 lg:w-full">
               <ShipsTab />
             </div>
           </div>
         </div>
 
-        {/* Game board (right on desktop, top on tablet/mobile) */}
         <div className="order-1 lg:order-2 w-full lg:w-2/3">
           <GameBoard />
         </div>
